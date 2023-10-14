@@ -91,3 +91,35 @@ def MVC(G):
     return min_cover
 
 
+#DFS2
+
+def DFS2(self, node1, node2):
+    S = [(node1, [node1])]
+    marked = {}
+    while S:
+        current_node, path = S.pop()
+        if current_node == node2:
+            return path
+        if not marked.get(current_node, False):
+            marked[current_node] = True
+            for neighbor in self.adj[current_node]:
+                new_path = path + [neighbor]
+                S.append((neighbor, new_path))
+    return []
+
+#BFS2
+
+def BFS2(self, node1, node2):
+    Q = deque([(node1, [node1])])
+    marked = {node1: True}
+    while Q:
+        current_node, path = Q.popleft()
+        if current_node == node2:
+            return path
+        for neighbor in self.adj[current_node]:
+            if not marked.get(neighbor, False):
+                marked[neighbor] = True
+                new_path = path + [neighbor]
+                Q.append((neighbor, new_path))
+    return []
+
