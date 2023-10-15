@@ -1,3 +1,5 @@
+import random
+
 from collections import deque
 
 #Undirected graph using an adjacency list
@@ -24,6 +26,38 @@ class Graph:
 
     def number_of_nodes():
         return len()
+    
+    #create_random_graph: assumes nodes are labeled from 0 to I-1
+    def create_random_graph(self, I, J):
+        if J < I - 1 or J > I * (I - 1) // 2:
+            raise ValueError("Invalid number of edges")
+
+        edges = set()
+        while len(edges) < J:
+            node1 = random.randint(0, I - 1)
+            node2 = random.randint(0, I - 1)
+            if node1 != node2:
+                edge = tuple(sorted((node1, node2)))
+                if edge not in edges:
+                    edges.add(edge)
+                    self.add_edge(node1, node2)
+
+        return self
+    
+    #approx1:
+    def approx1(self, G):
+        graph_copy = G
+        C = set()
+        while True:
+            v = max(graph_copy.adj, key=lambda v: len(graph_copy.adj[v]))
+            C.add(v)
+            for neighbor in graph_copy.adj[v]:
+                graph_copy.adj[neighbor].remove(v)
+            del graph_copy.adj[v]
+            if not any(graph_copy.adj.values()):
+                break
+
+        return C
 
 
 #Breadth First Search
@@ -122,4 +156,32 @@ def BFS2(self, node1, node2):
                 new_path = path + [neighbor]
                 Q.append((neighbor, new_path))
     return []
+
+#has_cycle
+def has_cycle(self, G):
+    visited = set()
+    for node in G:
+        if node not in visited:
+            stack = [node]
+            while stack:
+                current_node = stack[-1]
+                if current_node in visited:
+                    return True
+                visited.add(current_node)
+                stack.pop()
+                for neighbor in self.adj[current_node]:
+                    stack.append(neighbor)
+    return False
+
+def is_connected(self, G):
+    visited = set()
+    stack = [G[0]]
+    while stack:
+        current_node = stack[-1]
+        if current_node not in visited:
+            visited.add(current_node)
+            stack.pop()
+            for neighbor in self.adj[current_node]:
+                stack.append(neighbor)
+    return len(visited) == len(G)
 
