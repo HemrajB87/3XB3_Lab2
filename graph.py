@@ -155,7 +155,7 @@ def BFS2(self, node1, node2):
     return []
 
 #has_cycle
-def has_cycle(self, G):
+""" def has_cycle(G):
     visited = set()
     for node in G:
         if node not in visited:
@@ -168,9 +168,9 @@ def has_cycle(self, G):
                 stack.pop()
                 for neighbor in self.adj[current_node]:
                     stack.append(neighbor)
-    return False
+    return False """
 
-def is_connected(self, G):
+""" def is_connected(G):
     visited = set()
     stack = [G[0]]
     while stack:
@@ -180,5 +180,48 @@ def is_connected(self, G):
             stack.pop()
             for neighbor in self.adj[current_node]:
                 stack.append(neighbor)
-    return len(visited) == len(G)
+    return len(visited) == len(G) """
 
+def has_cycle(G):
+    visited = [False] * len(G.adj)
+    
+    for node in G.adj:
+        if not visited[node]:
+            if _has_cycle_helper(G, node, visited, -1):
+                return True
+                
+    return False
+
+def _has_cycle_helper(G, node, visited, parent):
+    visited[node] = True
+
+    for neighbor in G.adj[node]:
+        if not visited[neighbor]:
+            if _has_cycle_helper(G, neighbor, visited, node):
+                return True
+        elif parent != neighbor:
+            return True
+
+    return False
+
+def is_connected(G):
+    """
+    Function to check if the graph is connected.
+    """
+    visited = [False] * len(G.adj)
+
+    # Start DFS from the first node
+    dfs(G, list(G.adj.keys())[0], visited)
+
+    # If all nodes are visited then the graph is connected
+    return all(visited)
+#created my own to use for has_cycle, I think there may be an issue with BFS2 I couldn't get it to work
+def dfs(G, node, visited):
+    """
+    Recursive function to perform DFS.
+    """
+    visited[node] = True
+
+    for neighbor in G.adj[node]:
+        if not visited[neighbor]:
+            dfs(G, neighbor, visited)
