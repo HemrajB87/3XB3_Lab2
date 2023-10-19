@@ -1,4 +1,5 @@
 import random
+import copy
 
 from collections import deque
 
@@ -24,25 +25,13 @@ class Graph:
             self.adj[node1].append(node2)
             self.adj[node2].append(node1)
 
-    def number_of_nodes():
+    def number_of_nodes(self):
         return len()
     
  
     
-    #approx1:
-    def approx1(self, G):
-        graph_copy = G
-        C = set()
-        while True:
-            v = max(graph_copy.adj, key=lambda v: len(graph_copy.adj[v]))
-            C.add(v)
-            for neighbor in graph_copy.adj[v]:
-                graph_copy.adj[neighbor].remove(v)
-            del graph_copy.adj[v]
-            if not any(graph_copy.adj.values()):
-                break
 
-        return C
+
     
 #create_random_graph: assumes nodes are labeled from 0 to i-1
 def create_random_graph(i, j):
@@ -225,3 +214,80 @@ def dfs(G, node, visited):
     for neighbor in G.adj[node]:
         if not visited[neighbor]:
             dfs(G, neighbor, visited)
+
+#approx1:
+def approx1(G):
+    G_copy = copy.deepcopy(G)
+#start with empty set C
+    C = []
+    while True:
+
+        #Find the vertex with the highest degree in G, call this vertex v
+        v = max(G_copy.adj, key=lambda x: len(G_copy.adj[x]), default=None)
+        if v is None or len(G_copy.adj[v]) == 0:
+            break
+
+        #Add v to C
+        C.append(v)
+
+        #Remove all edges incedent to node v from G
+        for w in G_copy.adjacent_nodes(v):
+            G_copy.adj[w].remove(v)
+        G_copy.adj[v] = []    
+
+        #If C is a Vertex Cover return C, else go to step 2
+        if is_vertex_cover(G_copy, C):
+            return C
+    return C
+
+#approx2: 
+def approx2(G):
+    G_copy = copy.deepcopy(G)
+    #Start with an empty set C = {}
+    C = set()
+    while True:
+        #Select a vertex randomly from G which is not already in C, call this vertex v
+        available_vertices = [v for v in G_copy.adj if v not in C]
+        if not available_vertices:
+            #ensures empty graphs will not pass
+            return None
+        v = random.choice(available_vertices)
+
+        #Add v to C
+        C.add(v)
+
+        #If C is a Vertex Cover return C, else go to Step 2
+        if is_vertex_cover(G_copy, C):
+            return C
+        
+#approx3
+def approx3(G):
+    G_copy = copy.deepcopy(G)
+
+    #Start with an empty set C = {}
+    C = []
+    while G_copy.adj:
+
+        #Select an edge randomly from G, call this edge (u,v)
+        u = random.choice(list(G_copy.adj.keys()))
+        if not G_copy.adj[u]:
+            del G_copy.adj[u]
+            continue
+        v = random.choice(G_copy.adj[u])
+
+        #Add u and v to C
+        C.append(u)
+        C.append(v)
+
+        #Remove all edges incident to u or v from G
+        for n in G_copy.adj[u][:]:
+            G_copy.adj[n].remove(u)
+            if not G_copy.adj[n]:
+                del G_copy.adj[n]
+        del G_copy.adj[u]
+
+        #If C is a Vertex Cover return C, else go to Step 2
+    if is_vertex_cover(G, C):
+        return C
+    else:
+        return []
