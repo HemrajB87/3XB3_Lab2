@@ -27,22 +27,7 @@ class Graph:
     def number_of_nodes():
         return len()
     
-    #create_random_graph: assumes nodes are labeled from 0 to I-1
-    def create_random_graph(self, I, J):
-        if J < I - 1 or J > I * (I - 1) // 2:
-            raise ValueError("Invalid number of edges")
-
-        edges = set()
-        while len(edges) < J:
-            node1 = random.randint(0, I - 1)
-            node2 = random.randint(0, I - 1)
-            if node1 != node2:
-                edge = tuple(sorted((node1, node2)))
-                if edge not in edges:
-                    edges.add(edge)
-                    self.add_edge(node1, node2)
-
-        return self
+ 
     
     #approx1:
     def approx1(self, G):
@@ -58,7 +43,19 @@ class Graph:
                 break
 
         return C
-
+    
+#create_random_graph: assumes nodes are labeled from 0 to i-1
+def create_random_graph(i, j):
+    if j > (i * (i - 1)) / 2:
+        raise ValueError("Too many edges for the given number of nodes.")
+    graph = Graph(i)
+    while j > 0:
+        node1 = random.randint(0, i - 1)
+        node2 = random.randint(0, i - 1)
+        if node1 != node2 and not graph.are_connected(node1, node2):
+            graph.add_edge(node1, node2)
+            j -= 1
+    return graph
 
 #Breadth First Search
 def BFS(G, node1, node2):
