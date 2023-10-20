@@ -143,6 +143,32 @@ def BFS2(self, node1, node2):
                 Q.append((neighbor, new_path))
     return []
 
+
+# BFS3
+def BFS3(G, start_node):
+    Q = deque([start_node])
+    marked = {start_node: None}  # Predecessor dictionary, initialized with None for the start node
+    while Q:
+        current_node = Q.popleft()
+        for neighbor in G.adj[current_node]:
+            if neighbor not in marked:
+                marked[neighbor] = current_node
+                Q.append(neighbor)
+    return marked
+
+# DFS3
+def DFS3(G, start_node):
+    S = [start_node]
+    marked = {start_node: None}  # Predecessor dictionary, initialized with None for the start node
+    while S:
+        current_node = S.pop()
+        for neighbor in G.adj[current_node]:
+            if neighbor not in marked:
+                marked[neighbor] = current_node
+                S.append(neighbor)
+    return marked
+
+
 #has_cycle
 """ def has_cycle(G):
     visited = set()
