@@ -145,23 +145,16 @@ def BFS2(self, node1, node2):
 
 
 # Part 2 MIS(G)
-def is_independent_set(G, potential_set):
-    for i in range(len(potential_set)):
-        for j in range(i + 1, len(potential_set)):
-            if G.are_connected(potential_set[i], potential_set[j]):
-                return False
-    return True
-
 def MIS(G):
     nodes = [i for i in range(len(G.adj))]
-
     max_independent_set = []
-    for size in range(len(nodes), -1, -1):
-        subsets = [subset for subset in power_set(nodes) if len(subset) == size]
-        for subset in subsets:
-            if is_independent_set(G, subset):
-                max_independent_set = subset
-                break
+
+    while nodes:
+        node = nodes.pop(0)  # Choose an arbitrary node
+        max_independent_set.append(node)
+
+        # Remove the chosen node and its neighbors
+        nodes = [n for n in nodes if not G.are_connected(node, n)]
 
     return max_independent_set
 
