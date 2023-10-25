@@ -1,12 +1,7 @@
-#in this file, i will write a code to compare the precision of approx1, approx2, and approx3 to the MVC
-#i will do this by creating a list of SMALL random graphs with j edges,WORST CASE SCENARIO
-#i will range 6,7,8,9,10
-#and j will be 20
-# on the plot, the x axis will be the number of nodes(i) and the y axis will be the approximation of the MVC
 import matplotlib.pyplot as plt
 import graph
 
-#in this function, record the approx1, approx2, and approx3 and the MVC for a graph with 200 edges and i nodes
+#nodes = 5 6 7 8 9 , edges = 10
 def experiment(approxI,m):
     i_range = list(range(5,10))
     results={}
@@ -22,13 +17,12 @@ def experiment(approxI,m):
                 results[i] += len(graph.approx2(random_graph))
             elif approxI==3:
                 results[i] += len(graph.approx3(random_graph))
-        results[i] = results[i] / m
         
     return i_range, [results[i] for i in i_range]
 
 def plot_results():
     approxI_values = [0, 1, 2, 3]
-    m = 100 #repeat each experiment 10 times
+    m = 100 #repeat each experiment 100 times
     
     plt.figure(figsize=(10, 6))
     for approxI in approxI_values:
