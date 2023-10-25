@@ -3,11 +3,11 @@ import graph
 
 #8nodes, 1,5,10,15,20,25 edges
 def experiment(j):
+    MVC = 0
+    approx1 = 0
+    approx2 = 0
+    approx3 = 0
     for _ in range(1000):#repeat each experiment 1000 times
-        MVC = 0
-        approx1 = 0
-        approx2 = 0
-        approx3 = 0
         g = graph.create_random_graph(8, j)
         #record the MVC, approx1, approx2, and approx3
         MVC += len(graph.MVC(g))
