@@ -7,8 +7,8 @@ def experiment(x):
     approx1 = 0
     approx2 = 0
     approx3 = 0
+    g = graph.create_random_graph(15, 100)
     for _ in range(x):#repeat each experiment 1000 times
-        g = graph.create_random_graph(15, 100)
         #record the MVC, approx1, approx2, and approx3
         MVC += len(graph.MVC(g))
         approx1 += len(graph.approx1(g))
