@@ -111,24 +111,8 @@ def MVC(G):
     return min_cover
 
 
-#DFS2
-
-def DFS2(self, node1, node2):
-    S = [(node1, [node1])]
-    marked = {}
-    while S:
-        current_node, path = S.pop()
-        if current_node == node2:
-            return path
-        if not marked.get(current_node, False):
-            marked[current_node] = True
-            for neighbor in self.adj[current_node]:
-                new_path = path + [neighbor]
-                S.append((neighbor, new_path))
-    return []
-
 #BFS2
-
+# note to self remember bfs has deque
 def BFS2(self, node1, node2):
     Q = deque([(node1, [node1])])
     marked = {node1: True}
@@ -141,6 +125,21 @@ def BFS2(self, node1, node2):
                 marked[neighbor] = True
                 new_path = path + [neighbor]
                 Q.append((neighbor, new_path))
+    return []
+
+#DFS2
+def DFS2(self, node1, node2):
+    S = [(node1, [node1])]
+    marked = {}
+    while S:
+        current_node, path = S.pop()
+        if current_node == node2:
+            return path
+        if not marked.get(current_node, False):
+            marked[current_node] = True
+            for neighbor in self.adj[current_node]:
+                new_path = path + [neighbor]
+                S.append((neighbor, new_path))
     return []
 
 
@@ -157,8 +156,6 @@ def MIS(G):
         nodes = [n for n in nodes if not G.are_connected(node, n)]
 
     return max_independent_set
-
-
 
 
 # BFS3
@@ -247,7 +244,7 @@ def is_connected(G):
 
     # If all nodes are visited then the graph is connected
     return all(visited)
-#created my own to use for has_cycle, I think there may be an issue with BFS2 I couldn't get it to work
+
 def dfs(G, node, visited):
     """
     Recursive function to perform DFS.
