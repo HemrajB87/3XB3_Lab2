@@ -144,16 +144,23 @@ def DFS2(self, node1, node2):
 
 
 # Part 2 MIS(G)
+def is_independent_set(G, nodes):
+    for start in nodes:
+        for end in nodes:
+            if start != end and G.are_connected(start, end):
+                return False
+    return True
 def MIS(G):
     nodes = [i for i in range(len(G.adj))]
     max_independent_set = []
+    max_set_size = 0
 
-    while nodes:
-        node = nodes.pop(0)  # Choose an arbitrary node
-        max_independent_set.append(node)
+    subsets = power_set(nodes)
 
-        # Remove the chosen node and its neighbors
-        nodes = [n for n in nodes if not G.are_connected(node, n)]
+    for subset in subsets:
+        if is_independent_set(G, subset) and len(subset) > max_set_size:
+            max_independent_set = subset
+            max_set_size = len(subset)
 
     return max_independent_set
 

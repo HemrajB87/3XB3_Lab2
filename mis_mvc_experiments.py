@@ -17,10 +17,10 @@ def MVC_new(G):
 
 graph = Graph(6)
 
-
 graph.add_edge(0, 1)
 graph.add_edge(0, 2)
 graph.add_edge(1, 3)
+graph.add_edge(1, 2)
 graph.add_edge(2, 4)
 graph.add_edge(3, 5)
 
@@ -31,3 +31,4 @@ print("Maximum Independent Set:", max_independent_set)
 # Finding the Minimum Vertex Cover
 min_vertex_cover = MVC_new(graph)
 print("Minimum Vertex Cover:", min_vertex_cover)
+
